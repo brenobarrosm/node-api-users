@@ -5,14 +5,22 @@ class UserController {
 
     async create(req, res) {
         var { name, email, password } = req.body;
+
         if(email == undefined || email == ' ') {
             res.status(400);
-            res.json({ err: "Email inválido" });
+            res.json({ err: "Email inválido." });
             return;
         }
         if(password == undefined || password == ' ') {
             res.status(400);
-            res.json({ err: "Senha inválido" });
+            res.json({ err: "Senha inválida." });
+            return;
+        }
+
+        var emailExists = await User.findEmail(email);
+        if(emailExists) {
+            res.status(406);
+            res.json({ err: "Email já existente." });
             return;
         }
 

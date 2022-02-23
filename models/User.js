@@ -16,6 +16,21 @@ class User {
             console.log(err);
         }
     }
+
+    async findEmail(email) {
+        try {
+            var res = await knex.select("*").from("users").where({email: email});
+
+            if(res.length > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch(err) {
+            console.log(err);
+            return false;
+        }
+    }
 }
 
 module.exports = new User();
