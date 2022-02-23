@@ -4,9 +4,11 @@ var bctypt = require("bcrypt");
 class User {
     async new(email, password, name) {
         try {
+            var hash = await bctypt.hash(password, 10);
+
             await knex.insert({
                 email, 
-                password, 
+                password: hash, 
                 name, 
                 role: 0
             }).table('users');
