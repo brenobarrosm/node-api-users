@@ -46,6 +46,37 @@ class UserController {
         res.status(200);
         res.send("OK");
     }
+
+    async edit(req, res) {
+        var { id, name, email, role } = req.body;
+        var result = await User.update(id, email, name, role);
+
+        if(result != undefined) { 
+            if(result.status) {
+                res.status(200);
+                res.send("OK");
+            } else {
+                res.status(406);
+                res.json(result.err);
+            }
+        } else {
+            res.status(406);
+            res.json({ err: "Erro no servidor." });
+        }
+    }
+
+    async remove(req, res) {
+        var id = req.params.id;
+        
+        var result = await User.delete(id);
+        if(result.status) {
+            res.status(200);
+            res.send("OK");
+        } else {
+            res.status(406);
+            res.json(result.err);
+        }
+    }
 }
 
 module.exports = new UserController();
