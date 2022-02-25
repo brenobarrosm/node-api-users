@@ -28,7 +28,7 @@ class User {
         }
     }
 
-    async new(email, password, name) {
+    async create(email, password, name) {
         try {
             var hash = await bctypt.hash(password, 10);
 
@@ -40,6 +40,20 @@ class User {
             }).table("users");
         } catch(err) {
             console.log(err);
+        }
+    }
+
+    async findByEmail(email) {
+        try {
+            var result = await knex.select(["id", "email", "role", "name"]).where({email: email}).table("users");
+
+            if(result.length > 0) {
+                return result[0]
+            } else {
+                return undefined;
+            }
+        } catch(err) {
+            return undefined;
         }
     }
 

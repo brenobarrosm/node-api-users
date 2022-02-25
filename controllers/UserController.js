@@ -1,4 +1,5 @@
 var User = require("../models/User");
+var PasswordToken = require("../models/PasswordToken");
 
 class UserController {
     
@@ -41,7 +42,7 @@ class UserController {
             return;
         }
 
-        await User.new(email, password, name);
+        await User.create(email, password, name);
 
         res.status(200);
         res.send("OK");
@@ -72,6 +73,20 @@ class UserController {
         if(result.status) {
             res.status(200);
             res.send("OK");
+        } else {
+            res.status(406);
+            res.json(result.err);
+        }
+    }
+
+    async recoverPassword(req, res) {
+        var email = req.body.email;
+
+        var result = await PasswordToken.create(email);
+        if(result.status) {
+            res.status(200);
+            res.json({token: result.token});
+            //SendMail
         } else {
             res.status(406);
             res.json(result.err);
