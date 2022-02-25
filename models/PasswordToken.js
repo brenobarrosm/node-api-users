@@ -26,6 +26,32 @@ class PasswordToken {
             return {status: false, err: "O email informado não está cadastrado."}
         }
     }
+
+    async validate(token) {
+        try {
+            var result = await knex.select().where({token: token}).table("passwordtokens");
+            if(result.length > 0) {
+                var tk = result[0];
+
+                if(tk.used == 0) {
+                    return {status: true, token: tk};
+                } else {
+                    return {status: false, err: "Já utilizado."};
+                }
+                
+            } else {
+                return {status: false, err: "Não existe na base de dados"};
+            }
+        } catch(err) {
+            return {status: false, err: "Problema interno."};
+        }
+        
+    }
+
+    async setUsed(token) {
+        await knex.update({used: 1}).where({token: token}).table("passwordtokens");
+        return 
+    }
     
 }
 

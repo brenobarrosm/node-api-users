@@ -1,5 +1,6 @@
 var knex = require("../database/connection");
 var bctypt = require("bcrypt");
+const PasswordToken = require("./PasswordToken");
 
 class User {
 
@@ -121,6 +122,12 @@ class User {
         } else {
             return {status: false, err: "Usuário não encontrado."}
         }
+    }
+
+    async changePassword(newPassword, id, token) {
+        var hash = await bctypt.hash(newPassword, 10);
+        await knex.update({password: hash}).where({id: id}).table("users");
+        await PasswordToken.setUsed(token);
     }
 }
 
