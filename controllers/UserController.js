@@ -7,11 +7,13 @@ var JWTSecret = "p$O*o4ET2fA3rUsap8Lza@rUs#idRi";
 
 class UserController {
     
+    //List all users
     async index(req, res) {
         var users = await User.findAll();
         res.json(users);
     }
 
+    //Find a specific user
     async findUser(req, res) {
         var id = req.params.id;
         var user = await User.findById(id);
@@ -25,6 +27,7 @@ class UserController {
         }
     }
 
+    //Create user
     async create(req, res) {
         var { name, email, password } = req.body;
 
@@ -52,6 +55,7 @@ class UserController {
         res.send("OK");
     }
 
+    //Edit user
     async edit(req, res) {
         var { id, name, email, role } = req.body;
         var result = await User.update(id, email, name, role);
@@ -70,6 +74,7 @@ class UserController {
         }
     }
 
+    //Delete user
     async remove(req, res) {
         var id = req.params.id;
         
@@ -83,6 +88,7 @@ class UserController {
         }
     }
 
+    //Get Token
     async recoverPassword(req, res) {
         var email = req.body.email;
 
@@ -97,6 +103,7 @@ class UserController {
         }
     }
 
+    //Change Password
     async changePassword(req, res) {
         var token = req.body.token;
         var password = req.body.password;
@@ -113,6 +120,7 @@ class UserController {
         }
     }
 
+    //Login
     async login(req, res) {
         var { email, password } = req.body;
 

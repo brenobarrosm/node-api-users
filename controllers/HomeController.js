@@ -1,7 +1,7 @@
 class HomeController{
 
     async index(req, res){
-        res.send("/ - HomeController");
+        res.send("/ - API Users");
     }
 
 }
